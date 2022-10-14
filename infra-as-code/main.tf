@@ -14,7 +14,7 @@ terraform {
 
 module "init-environments" {
   for_each              = toset(var.environments)
-  source                = "github.com/Thaeimos/terraform-init-envs/"
+  source                = "github.com/Thaeimos/terraform-init-envs/?ref=v1.0.0"
   environment           = each.value
   s3_bucket_prefix      = var.s3_bucket_prefix
   s3_bucket_name        = var.s3_bucket_name
