@@ -15,3 +15,8 @@ variable "environment" {
   description = "The environment we are at."
   default     = "testing"
 }
+
+variable "main_cidr_block" {
+  type        = string
+  description = "CIDR block of IPs for the VPC."
+}

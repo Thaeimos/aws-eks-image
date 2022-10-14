@@ -1,7 +1,17 @@
-resource "aws_vpc" "my_vpc" {
-  cidr_block = "172.16.0.0/16"
+# Dynamic AZs and subnets
+data "aws_availability_zones" "azs" {
+  state = "available"
+}
 
-  tags = {
-    Name = "$${var.name}"
-  }
+locals {
+  az_names = data.aws_availability_zones.azs.names
+}
+
+locals {
+  cluster_name = "eks-${random_string.suffix.result}"
+}
+
+resource "random_string" "suffix" {
+  length  = 8
+  special = false
 }
