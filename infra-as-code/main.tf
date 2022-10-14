@@ -6,7 +6,7 @@ terraform {
       version = ">= 4.30.0"
     }
     local = {
-      source  = "hashicorp/aws"
+      source  = "hashicorp/local"
       version = ">= 2.2.3"
     }
   }
@@ -14,7 +14,7 @@ terraform {
 
 module "init-environments" {
   for_each              = toset(var.environments)
-  source                = "../modules/terraform-init-envs/"
+  source                = "github.com/Thaeimos/terraform-init-envs/"
   environment           = each.value
   s3_bucket_prefix      = var.s3_bucket_prefix
   s3_bucket_name        = var.s3_bucket_name
