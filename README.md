@@ -37,7 +37,7 @@ List the ready features here:
 
 - Automatic environments creation using external module.
 - VPC and EKS creation using external pinned module.
-- Dynamic creation of subnets CIDR based on Availability Zones for that Region.
+- [Dynamic creation](/infra-as-code/main.tf) of subnets CIDR based on Availability Zones for that Region.
 
 
 ## Architectural Diagram
