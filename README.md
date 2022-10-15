@@ -29,6 +29,7 @@ The idea is to create a docker image that will get deployed on EKS, after passin
 
 - Terraform - version 1.1.7
 - Git       - version 2.37.2
+- Docker    - version 20.10.18
 
 
 ## Features
@@ -38,6 +39,8 @@ List the ready features here:
 - Automatic environments creation using external module.
 - VPC and EKS creation using external pinned module.
 - [Dynamic creation](/infra-as-code/main.tf) of subnets CIDR based on Availability Zones for that Region.
+- Docker custom message creation.
+- Documentation.
 
 
 ## Architectural Diagram
@@ -87,6 +90,35 @@ And the config should be done, we just need to apply it with:
 ```bash
 terraform apply # -auto-approve # Only for the brave
 ```
+
+### Run locally the Docker application
+We need to move into the "nginx-application" folder. Once there, we will need to build the image:
+
+```bash
+docker build . -t nginx-custom
+```
+
+And then we will need to run it:
+```bash
+docker run -it --rm -d -p 8081:80 --name web nginx-custom
+```
+
+Verify it works properly:
+
+```bash
+curl localhost:8081
+    <!doctype html>
+    ...
+    <h2>Hello World Yougov!</h2>
+    </body>
+    </html> 
+docker logs web 
+    /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+    ...
+    2022/10/15 07:29:09 [notice] 1#1: start worker process 38
+    172.17.0.1 - - [15/Oct/2022:07:30:06 +0000] "GET / HTTP/1.1" 200 156 "-" "curl/7.82.0" "-"
+```
+
 
 ### Deploy Docker application
 
