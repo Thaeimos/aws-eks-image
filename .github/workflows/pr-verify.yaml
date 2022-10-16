@@ -20,6 +20,7 @@ jobs:
 
       - name: Credentials scanner
         uses: ShiftLeftSecurity/scan-action@v1.3.0
+        with:
           src: "${{ github.workspace }}/nginx-application/"
 
       - name: Sonar scanner
