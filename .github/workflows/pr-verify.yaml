@@ -9,9 +9,6 @@ on:
      paths:
       - 'nginx-application/**'
 
-env:
-  APP_DIR: nginx-application
-
 jobs:
   build:
 
@@ -24,7 +21,7 @@ jobs:
       - name: Credentials scanner
         uses: ShiftLeftSecurity/scan-action@v1.3.0
         with:
-          src: "$APP_DIR"
+          src: "nginx-application"
 
       - name: Sonar scanner
         run: |
