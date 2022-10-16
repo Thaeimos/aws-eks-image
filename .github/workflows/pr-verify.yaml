@@ -24,7 +24,7 @@ jobs:
 
       - name: Set app directory as secret
         run: |
-          gh secret set APP_DIR_SECRET --body "$APP_DIR" --repo {{ env.GITHUB_REPOSITORY }}
+          gh secret set APP_DIR_SECRET --body "$APP_DIR"
 
       # - name: Credentials scanner
       #   uses: ShiftLeftSecurity/scan-action@v1.3.0
