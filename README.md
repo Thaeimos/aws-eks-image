@@ -44,6 +44,9 @@ List the ready features here:
     - Dockerfile with pinned Nginx image that displays custom message.
     - Runs with normal docker commands, as explained in the [run locally](#run-locally-the-docker-application) section.
     - Prints logs to the console.
+    - Passes [security scans and linters](https://github.com/Thaeimos/aws-eks-image/actions/runs/3260212935/jobs/5353610420).
+- Pipeline based on Github actions:
+    - Pull requests validator with linter, security scanner, password detector, placeholder for Sonar and Docker image scanner. You can check the definitions [here](/.github/workflows/pr-verify.yaml).
 - Documentation.
 
 
