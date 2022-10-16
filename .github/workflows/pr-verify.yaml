@@ -16,15 +16,10 @@ jobs:
 
     env:
       APP_DIR: nginx-application
-      GH_TOKEN: ${{ secrets.ACTIONS_TOKEN_SECRET }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Set app directory as secret
-        run: |
-          gh secret set APP_DIR_SECRET --body "$APP_DIR"
 
       - name: Credentials scanner
         uses: ShiftLeftSecurity/scan-action@v1.3.0
@@ -41,7 +36,7 @@ jobs:
 
       - uses: ghe-actions/dockerfile-validator@v2
         with:
-          dockerfile: "${{ secrets.APP_DIR_SECRET }}/Dockerfile"
+          dockerfile: "${{ env.APP_DIR }}/Dockerfile"
           lint: 'hadolint'
 
       - name: Set up Docker Buildx
@@ -50,12 +45,12 @@ jobs:
       - name: build local container
         uses: docker/build-push-action@v2
         with:
-          tags: localbuild/${{ secrets.APP_DIR_SECRET }}:latest
+          tags: localbuild/${{ env.APP_DIR }}:latest
           push: false
           load: true
-          context: "${{ secrets.APP_DIR_SECRET }}"
+          context: "${{ env.APP_DIR}}"
 
       - name: Scan image
         uses: anchore/scan-action@v3
         with:
-          image: "localbuild/${{ secrets.APP_DIR_SECRET }}:latest"
+          image: "localbuild/${{ env.APP_DIR}}:latest"
