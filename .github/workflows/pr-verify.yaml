@@ -9,13 +9,15 @@ on:
      paths:
       - 'nginx-application/**'
 
+env:
+  APP_DIR: nginx-application
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
-    env:
-      DIRECTORY: nginx-application
+    
 
     steps:
       - name: Checkout
@@ -24,7 +26,7 @@ jobs:
       - name: Credentials scanner
         uses: ShiftLeftSecurity/scan-action@v1.3.0
         with:
-          src: "$DIRECTORY"
+          src: "$APP_DIR"
 
       - name: Sonar scanner
         run: |
@@ -36,5 +38,5 @@ jobs:
 
       - uses: ghe-actions/dockerfile-validator@v2
         with:
-          dockerfile: "$DIRECTORY/Dockerfile"
+          dockerfile: "$APP_DIR/Dockerfile"
           lint: 'hadolint'
