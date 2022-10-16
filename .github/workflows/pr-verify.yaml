@@ -23,14 +23,14 @@ jobs:
 
       - name: Set app directory as secret
         run: |
-          gh secret set APP_DIR --repo {{ env.GITHUB_REPOSITORY }}
+          gh secret set $APP_DIR --repo {{ env.GITHUB_REPOSITORY }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Credentials scanner
-        uses: ShiftLeftSecurity/scan-action@v1.3.0
-        with:
-          src: "{{ env.APP_DIR }}"
+      # - name: Credentials scanner
+      #   uses: ShiftLeftSecurity/scan-action@v1.3.0
+      #   with:
+      #     src: "{{ env.APP_DIR }}"
 
       - name: Sonar scanner
         run: |
