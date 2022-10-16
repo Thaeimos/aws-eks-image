@@ -6,4 +6,4 @@ no-color: false
 no-fail: false
 trustedRegistries: 
   - docker.io
-  - "*.yougov.com"
+  - "*.yourcompany.com"
