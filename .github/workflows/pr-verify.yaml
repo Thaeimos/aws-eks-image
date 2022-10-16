@@ -53,6 +53,7 @@ jobs:
           tags: localbuild/${{ secrets.APP_DIR_SECRET }}:latest
           push: false
           load: true
+          context: "${{ secrets.APP_DIR_SECRET }}"
 
       - name: Scan image
         uses: anchore/scan-action@v3
