@@ -13,6 +13,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    permissions: write-all # Needed to have a token that allows secrets creation
 
     env:
       APP_DIR: nginx-application
