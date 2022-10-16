@@ -14,6 +14,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      DIRECTORY: nginx-application
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -21,7 +24,7 @@ jobs:
       - name: Credentials scanner
         uses: ShiftLeftSecurity/scan-action@v1.3.0
         with:
-          src: "${{ github.workspace }}/nginx-application/"
+          src: "$DIRECTORY"
 
       - name: Sonar scanner
         run: |
@@ -33,10 +36,5 @@ jobs:
 
       - uses: ghe-actions/dockerfile-validator@v2
         with:
-          dockerfile: 'frontend-app/Dockerfile'
-          lint: 'hadolint'
-
-      - uses: ghe-actions/dockerfile-validator@v2
-        with:
-          dockerfile: 'frontend-app/Dockerfile'
+          dockerfile: "$DIRECTORY/Dockerfile"
           lint: 'hadolint'
