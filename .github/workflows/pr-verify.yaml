@@ -1,10 +1,13 @@
 name: PR Verify for CI
 
 on:
-  pull_request:
-    paths:
+  # pull_request:
+  #   paths:
+  #     - 'nginx-application/**'
+  #   types: [opened, synchronize, reopened]
+  push:
+     paths:
       - 'nginx-application/**'
-    types: [opened, synchronize, reopened]
 
 jobs:
   build:
@@ -17,7 +20,7 @@ jobs:
 
       - name: Credentials scanner
         uses: ShiftLeftSecurity/scan-action@v1.3.0
-        src: ${{ github.workspace }}/nginx-application/
+          src: "${{ github.workspace }}/nginx-application/"
 
       - name: Sonar scanner
         run: |
