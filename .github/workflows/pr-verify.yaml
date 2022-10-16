@@ -1,0 +1,33 @@
+name: PR Verify for CI
+
+on:
+  pull_request:
+    paths:
+      - 'nginx-application/**'
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Credentials scanner
+        uses: ShiftLeftSecurity/scan-action@v1.3.0
+          src: ${{ github.workspace }}/nginx-application/
+
+      - name: Sonar scanner
+        run: |
+          echo "To be done in the future"
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v31
+
+      - uses: ghe-actions/dockerfile-validator@v2
+        with:
+          dockerfile: 'frontend-app/Dockerfile'
+          lint: 'hadolint'
