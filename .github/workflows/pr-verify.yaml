@@ -17,7 +17,7 @@ jobs:
 
       - name: Credentials scanner
         uses: ShiftLeftSecurity/scan-action@v1.3.0
-          src: ${{ github.workspace }}/nginx-application/
+        src: ${{ github.workspace }}/nginx-application/
 
       - name: Sonar scanner
         run: |
@@ -26,6 +26,11 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v31
+
+      - uses: ghe-actions/dockerfile-validator@v2
+        with:
+          dockerfile: 'frontend-app/Dockerfile'
+          lint: 'hadolint'
 
       - uses: ghe-actions/dockerfile-validator@v2
         with:
