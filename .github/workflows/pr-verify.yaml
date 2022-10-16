@@ -23,7 +23,7 @@ jobs:
 
       - name: Set app directory as secret
         run: |
-          gh secret set $APP_DIR --repo {{ env.GITHUB_REPOSITORY }}
+          gh secret set APP_DIR_SECRET --repo {{ env.GITHUB_REPOSITORY }} --body $APP_DIR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
