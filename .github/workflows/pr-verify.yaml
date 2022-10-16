@@ -1,13 +1,10 @@
 name: PR Verify for CI
 
 on:
-  # pull_request:
-  #   paths:
-  #     - 'nginx-application/**'
-  #   types: [opened, synchronize, reopened]
-  push:
-     paths:
+  pull_request:
+    paths:
       - 'nginx-application/**'
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
