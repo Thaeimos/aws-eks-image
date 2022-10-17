@@ -73,8 +73,8 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         with:
           tags: |
-            ${{ ECR_REGISTRY }}/${{ ECR_REPOSITORY }}:latest
-            ${{ ECR_REGISTRY }}/${{ ECR_REPOSITORY }}:$IMAGE_TAG
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
           push: true
           context: "${{ env.APP_DIR}}"
           cache-from: type=gha
