@@ -45,7 +45,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: frontend-app
+        working-directory: nginx-application
 
     steps:
       - name: Checkout
