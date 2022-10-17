@@ -74,7 +74,6 @@ jobs:
         with:
           tags: $ECR_REGISTRY/$ECR_REPOSITORY:latest, $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           push: true
-          load: true
           context: "${{ env.APP_DIR}}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
