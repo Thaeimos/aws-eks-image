@@ -27,3 +27,8 @@ output "cluster_name" {
   value       = local.cluster_name
   sensitive   = true
 }
+
+output "ECR_NAME" {
+  description = "ECR Name"
+  value       = var.name
+}
