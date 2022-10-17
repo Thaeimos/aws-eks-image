@@ -47,6 +47,8 @@ List the ready features here:
     - Passes [security scans and linters](https://github.com/Thaeimos/aws-eks-image/actions/runs/3260212935/jobs/5353610420).
 - Pipeline based on Github actions:
     - Pull requests validator with linter, security scanner, password detector, placeholder for Sonar and Docker image scanner. You can check the definitions [here](/.github/workflows/pr-verify.yaml).
+    - Infrastructure as code [deployment](./.github/workflows/iac-deploy.yaml).
+    - Image publishing on private container repository [pipeline](./.github/workflows/app-publish-image.yaml).
 - Documentation.
 
 
