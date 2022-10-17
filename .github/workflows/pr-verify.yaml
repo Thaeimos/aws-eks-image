@@ -5,9 +5,6 @@ on:
     paths:
       - 'nginx-application/**'
     types: [opened, synchronize, reopened]
-  push:
-    paths:
-      - 'nginx-application/**'
 
 jobs:
   build:
@@ -21,24 +18,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+        # Search for passwords or secrets in the code
       - name: Credentials scanner
         uses: ShiftLeftSecurity/scan-action@v1.3.0
         with:
           src: "${{ env.APP_DIR }}"
 
+        # Run Sonar on the code
       - name: Sonar scanner
         run: |
           echo "To be done in the future"
       
+        # Display changed files for audit purposes
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v31
 
+        # Validate/lint Docker according to our standards in Hadolint
       - uses: ghe-actions/dockerfile-validator@v2
         with:
           dockerfile: "${{ env.APP_DIR }}/Dockerfile"
           lint: 'hadolint'
 
+        # Build our Docker image locally
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2.1.0
 
@@ -52,7 +54,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+        # Scan for vulnerabilities our local Docker image
       - name: Scan image
         uses: anchore/scan-action@v3
         with:
           image: "localbuild/${{ env.APP_DIR}}:latest"
+          severity-cutoff: medium
