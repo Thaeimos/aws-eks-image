@@ -56,3 +56,27 @@ module "eks" {
     }
   }
 }
+
+# ECR
+resource "aws_ecr_repository" "docker_repo_frontend" {
+  name = var.name
+}
+
+resource "aws_ecr_lifecycle_policy" "docker_repo_frontend" {
+  repository = aws_ecr_repository.docker_repo_frontend.name
+
+  policy = jsonencode({
+    rules = [{
+      rulePriority = 1
+      description  = "keep last 10 images"
+      action = {
+        type = "expire"
+      }
+      selection = {
+        tagStatus   = "any"
+        countType   = "imageCountMoreThan"
+        countNumber = 10
+      }
+    }]
+  })
+}
