@@ -10,9 +10,8 @@ on:
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  ECR_REPOSITORY: ${{ secrets.FRONT_NAME }}
+  ECR_REPOSITORY: ${{ secrets.ECR_NAME }}
   APP_DIR: nginx-application
-  CONTAINER_NAME: ${{ secrets.FRONT_NAME }}   # set
 
 jobs:
 
