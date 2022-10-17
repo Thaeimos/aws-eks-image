@@ -72,7 +72,9 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         with:
-          tags: $ECR_REPOSITORY:latest, $ECR_REPOSITORY:$IMAGE_TAG
+          tags: |
+            $ECR_REPOSITORY:latest
+            $ECR_REPOSITORY:$IMAGE_TAG
           push: true
           context: "${{ env.APP_DIR}}"
           cache-from: type=gha
