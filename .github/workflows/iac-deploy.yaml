@@ -1,0 +1,80 @@
+
+name: Deploy IaC using Terraform
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - infra-as-code/**
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECS_CLUSTER: ${{ secrets.FRONT_NAME }}
+
+jobs:
+
+  setup-stage:
+    name: Set environment based on branch
+    outputs:
+      phase: ${{ steps.env-name.outputs.phase }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Environment Name
+        id: env-name
+        run: |
+          if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
+              echo "::set-output name=phase::testing"
+          else
+              echo "::set-output name=phase::unknown"
+          fi
+
+  deploy:
+    name: Deploy IaC using Terraform
+    needs: setup-stage
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{needs.setup-stage.outputs.phase}}
+      url: http://thaeimos.com/${{needs.setup-stage.outputs.phase}}
+    defaults:
+      run:
+        shell: bash
+        working-directory: infra-as-code/environments/${{needs.setup-stage.outputs.phase}} # Based on environment, we go to one folder or the other
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create the backend.tfvars and terraform.tfvars file
+        id: build-image
+        run: |
+          echo ${{ secrets.TERRA_BUCKET }} | base64 -d > backend.tfvars
+          echo ${{ secrets.TERRA_VARS }} | base64 -d > terraform.tfvars
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.1.7
+
+      - name: Terraform Init
+        run: |
+          terraform init -backend-config backend.tfvars
+
+      - name: Terraform Validate
+        run: |
+          terraform validate
+
+      - name: Terraform Linter
+        run: |
+          echo "To be done in the future"
+
+      - name: Terraform Apply
+        run: |
+          terraform apply -auto-approve
