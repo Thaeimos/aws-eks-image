@@ -1,5 +1,5 @@
 
-name: Deploy application to ECR
+name: Publish application to ECR
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
           fi
 
   deploy:
-    name: Deploy application to ECR
+    name: Publish application to ECR
 
     needs: setup-stage
 
