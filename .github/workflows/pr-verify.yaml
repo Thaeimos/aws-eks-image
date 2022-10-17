@@ -5,6 +5,9 @@ on:
     paths:
       - 'nginx-application/**'
     types: [opened, synchronize, reopened]
+  push:
+    paths:
+      - 'nginx-application/**'
 
 jobs:
   build:
