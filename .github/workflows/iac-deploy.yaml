@@ -82,4 +82,5 @@ jobs:
 
       - name: Set needed outputs as secrets
         run: |
-          gh secret set ECR_URL --body $(terraform output -raw ECR_URL)
+          SECRET=$(terraform output -raw ECR_URL)
+          gh secret set ECR_URL --body "$SECRET"
