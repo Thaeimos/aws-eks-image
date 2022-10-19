@@ -84,3 +84,5 @@ jobs:
         run: |
           SECRET=$(terraform output -raw ECR_URL)
           gh secret set ECR_URL --body "$SECRET" --env ${{ needs.setup-stage.outputs.phase }}
+          SECRET=$(terraform output -raw ECR_NAME)
+          gh secret set ECR_NAME --body "$SECRET" --env ${{ needs.setup-stage.outputs.phase }}
