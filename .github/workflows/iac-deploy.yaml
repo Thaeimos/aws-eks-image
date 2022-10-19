@@ -35,12 +35,12 @@ jobs:
     needs: setup-stage
     runs-on: ubuntu-latest
     environment: 
-      name: ${{needs.setup-stage.outputs.phase}}
-      url: http://thaeimos.com/${{needs.setup-stage.outputs.phase}}
+      name: ${{ needs.setup-stage.outputs.phase }}
+      url: http://thaeimos.com/${{ needs.setup-stage.outputs.phase }}
     defaults:
       run:
         shell: bash
-        working-directory: infra-as-code/environments/${{needs.setup-stage.outputs.phase}} # Based on environment, we go to one folder or the other
+        working-directory: infra-as-code/environments/${{ needs.setup-stage.outputs.phase }} # Based on environment, we go to one folder or the other
 
     steps:
       - name: Checkout
@@ -83,4 +83,4 @@ jobs:
       - name: Set needed outputs as secrets
         run: |
           SECRET=$(terraform output -raw ECR_URL)
-          gh secret set ECR_URL --body "$SECRET"
+          gh secret set ECR_URL --body "$SECRET" --env ${{ needs.setup-stage.outputs.phase }}
