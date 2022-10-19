@@ -166,7 +166,8 @@ Project is: _Actively working_.
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
 
-- Pin external module
+- Pin external module.
+- Create namespace for app "nginx-app".
 
 
 ## Acknowledgements
@@ -174,6 +175,7 @@ Give credit here.
 
 - The VPC and EKS cluster creation is based [on this article](https://learn.hashicorp.com/tutorials/terraform/eks) from Hashicorp.
 - Dockerfile for Nginx customization is inspired on this [article](https://www.docker.com/blog/how-to-use-the-official-nginx-docker-image/).
+- Liveness and Readiness probes information was taken from [here](https://developers.redhat.com/blog/2020/11/10/you-probably-need-liveness-and-readiness-probes#example_3__a_server_side_rendered_application_with_an_api).
 
 
 
