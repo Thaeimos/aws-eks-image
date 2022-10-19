@@ -31,7 +31,7 @@ jobs:
               echo "::set-output name=phase::unknown"
           fi
 
-  deploy:
+  upload-image:
     name: Publish application to ECR
 
     needs: setup-stage
@@ -79,3 +79,23 @@ jobs:
           context: "${{ env.APP_DIR}}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy-image:
+    name: Deploy application to EKS
+
+    needs: upload-image
+
+    runs-on: ubuntu-latest
+
+    environment: 
+      name: ${{needs.setup-stage.outputs.phase}}
+      url: http://thaeimos.com/${{needs.setup-stage.outputs.phase}}
+    
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.APP_DIR }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
