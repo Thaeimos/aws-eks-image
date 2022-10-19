@@ -11,6 +11,7 @@ on:
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   ECS_CLUSTER: ${{ secrets.FRONT_NAME }}
+  GH_TOKEN: ${{ secrets.ACTIONS_TOKEN_SECRET }}
 
 jobs:
 
@@ -78,3 +79,7 @@ jobs:
       - name: Terraform Apply
         run: |
           terraform apply -auto-approve
+
+      - name: Set needed outputs as secrets
+        run: |
+          gh secret set ECR_URL --body $(terraform output -raw ECR_URL)
