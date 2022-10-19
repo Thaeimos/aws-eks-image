@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - infra-as-code/**
+      - .github/workflows/iac-deploy.yaml
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
