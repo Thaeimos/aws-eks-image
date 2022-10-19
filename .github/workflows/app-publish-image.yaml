@@ -109,11 +109,3 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-
-
-tags: ***.dkr.ecr.***.amazonaws.com/***:latest
-      ***.dkr.ecr.***.amazonaws.com/***:998fa68e7acabd55c18e92b452c75d61ec83eb6e
-
-tags: ***.dkr.ecr.***.amazonaws.com/***:latest
-      ***.dkr.ecr.***.amazonaws.com/***:dae8c5c685a2c412293be88a0f06314283d40793
