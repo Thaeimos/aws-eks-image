@@ -32,3 +32,8 @@ output "ECR_URL" {
   description = "ECR URL where images get deployed."
   value       = aws_ecr_repository.docker_repo_frontend.repository_url
 }
+
+output "ECR_NAME" {
+  description = "ECR name. Needed to login into the proper ECR registry on later stages."
+  value       = aws_ecr_repository.docker_repo_frontend.name
+}
