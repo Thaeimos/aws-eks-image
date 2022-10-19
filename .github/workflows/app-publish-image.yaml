@@ -1,5 +1,5 @@
 
-name: Publish application to ECR
+name: Publish ECR - Deploy EKS
 
 on:
   push:
@@ -66,6 +66,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2.1.0
 
+      - name: troubleshoot
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          echo "Registro"
+          echo "${{ env.ECR_REGISTRY }}"
+          echo "Repo"
+          echo "${{ env.ECR_REPOSITORY }}"
+
       - name: Build, tag, and push image to Amazon ECR
         uses: docker/build-push-action@v3.2.0
         env:
@@ -99,3 +109,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+
+
+tags: ***.dkr.ecr.***.amazonaws.com/***:latest
+      ***.dkr.ecr.***.amazonaws.com/***:998fa68e7acabd55c18e92b452c75d61ec83eb6e
+
+tags: ***.dkr.ecr.***.amazonaws.com/***:latest
+      ***.dkr.ecr.***.amazonaws.com/***:dae8c5c685a2c412293be88a0f06314283d40793
