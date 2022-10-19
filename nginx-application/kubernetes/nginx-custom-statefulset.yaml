@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: nginx-app
+  name: nginx-app
+spec:
+  selector:
+    matchLabels:
+      app: nginx-app
+  serviceName: nginx-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+      - name: nginx-app
+        image: nginx
+        env:
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "1"
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: "/var/www/mytest"
+          name: mypd
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 800m
+            memory: 2Gi
+        # livenessProbe:
+        #   exec:
+        #     command: ["mysqladmin", "ping"]
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 10
+        #   timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /index.html
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: mypd
+        persistentVolumeClaim:
+          claimName: myclaim
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: nginx-app
+  name: myclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 6Gi
