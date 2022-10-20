@@ -103,11 +103,16 @@ jobs:
 
       # Clean tag due to bug https://github.com/kubernetes/kubernetes/issues/73906#issuecomment-673674479
       - name: Terraform clean tag
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           SEC_GROUP=$(terraform show -json | jq -r ' .values.root_module.child_modules[].resources[] | select ( .address=="module.eks.aws_eks_cluster.this[0]" ) | .values.vpc_config[].cluster_security_group_id ')
           if [[ $SEC_GROUP == sg-* ]]; then
             echo "We have a security group from the cluster to clean."
             echo "Value is $SEC_GROUP"
+            echo "The resource has the following tags PRE removal:"
+            aws ec2 describe-tags --region ${{ secrets.AWS_REGION }} --filters "Name=resource-id,Values=$SEC_GROUP"
           else
             echo "No security group found."
             echo "Value is $SEC_GROUP"
