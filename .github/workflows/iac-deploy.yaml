@@ -116,7 +116,7 @@ jobs:
             echo "Removing the conflicting tag..."
             aws ec2 delete-tags --region ${{ secrets.AWS_REGION }} --resources $SEC_GROUP --tags "Key=kubernetes.io/cluster/eks-8PXw1Yog,Value=owned"
             echo "The resource has the following tags POST removal:"
-            aws ec2 describe-tags --region ${{ secrets.AWS_REGION }} --resources $SEC_GROUP --tags "Name=kubernetes.io/cluster/eks-8PXw1Yog,Values=owned"
+            aws ec2 describe-tags --region ${{ secrets.AWS_REGION }} --filters "Name=resource-id,Values=$SEC_GROUP"
           else
             echo "No security group found."
             echo "Value is $SEC_GROUP"
