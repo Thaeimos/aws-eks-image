@@ -91,6 +91,6 @@ jobs:
       - name: Debug secrets
         run: |
           echo "Secret01"
-          echo ${{ secrets.ECR_URL }} | sed 's/./& /g'
+          echo "${{ secrets.ECR_URL }}" | sed 's/./& /g'
           echo "Secret02"
-          echo ${{ secrets.ECR_NAME }} | sed 's/./& /g'
+          echo "${{ secrets.ECR_NAME }}" | sed 's/./& /g'
