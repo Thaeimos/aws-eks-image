@@ -94,9 +94,9 @@ jobs:
           SECRET02=$(terraform output -raw ECR_NAME)
           gh secret set ECR_NAME --body "$SECRET02" --env "${{ needs.setup-stage.outputs.phase }}"
 
-      - name: Debug secrets
-        run: |
-          echo "Secret01"
-          echo "${{ secrets.ECR_URL }}" | sed 's/./& /g'
-          echo "Secret02"
-          echo "${{ secrets.ECR_NAME }}" | sed 's/./& /g'
+      # - name: Debug secrets
+      #   run: |
+      #     echo "Secret01"
+      #     echo "${{ secrets.ECR_URL }}" | sed 's/./& /g'
+      #     echo "Secret02"
+      #     echo "${{ secrets.ECR_NAME }}" | sed 's/./& /g'
