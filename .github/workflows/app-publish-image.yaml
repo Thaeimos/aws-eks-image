@@ -75,7 +75,7 @@ jobs:
             ${{ secrets.ECR_URL }}:latest
             ${{ secrets.ECR_URL }}:${{ env.IMAGE_TAG }}
           push: true
-          context: "${{ env.APP_DIR}}"
+          context: "${{ env.APP_DIR }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
