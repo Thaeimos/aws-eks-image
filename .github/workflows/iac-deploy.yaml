@@ -100,3 +100,15 @@ jobs:
       #     echo "${{ secrets.ECR_URL }}" | sed 's/./& /g'
       #     echo "Secret02"
       #     echo "${{ secrets.ECR_NAME }}" | sed 's/./& /g'
+
+      # Clean tag due to bug https://github.com/kubernetes/kubernetes/issues/73906#issuecomment-673674479
+      - name: Terraform clean tag
+        run: |
+          SEC_GROUP=$(terraform show -json | jq -r ' .values.root_module.child_modules[].resources[] | select ( .address=="module.eks.aws_eks_cluster.this[0]" ) | .values.vpc_config[].security_group_ids[] ')
+          if [[ $SEC_GROUP == sg-* ]]; then
+            echo "We have a security group from the cluster to clean."
+            echo "Value is $SEC_GROUP"
+          else
+            echo "No security group found."
+            echo "Value is $SEC_GROUP"
+          fi
