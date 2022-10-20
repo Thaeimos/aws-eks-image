@@ -68,7 +68,6 @@ N/A
 
 ### Deploy infrastructure
 First we need to deploy the infrastructure. There is one environment created for this project called [testing](/infra-as-code/environments/testing/). We move into that folder and we fill up the necessary information to connect to the remote bucket that will contain our state:
-
 ```bash
 cat backend.tfvars.example
     bucket              = "sre-challenge-test"
@@ -80,13 +79,11 @@ cat backend.tfvars.example
 
 The file that we should put our information should be called "backend.tfvars".
 Once that's done, we can initialize our environment to connect to the remote state:
-
 ```bash
 terraform init -backend-config backend.tfvars
 ```
 
 Moving forward, we should fill up a "terraform.tfvars" file similar to the example provided, so we can add the values needed to our variables in the manifests:
-
 ```bash
 cat terraform.tfvars.example
     region          = "us-west-1"
@@ -95,9 +92,22 @@ cat terraform.tfvars.example
 ```
 
 And the config should be done, we just need to apply it with:
-
 ```bash
 terraform apply # -auto-approve # Only for the brave
+```
+
+Then we connect to the Kubernetes cluster using the following:
+```bash
+aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
+```
+
+Test we connected OK to the cluster:
+```bash
+kubectl get nodes
+    NAME                                       STATUS   ROLES    AGE   VERSION
+    ip-10-0-1-107.eu-west-1.compute.internal   Ready    <none>   14h   v1.22.12-eks-ba74326
+    ip-10-0-1-108.eu-west-1.compute.internal   Ready    <none>   14h   v1.22.12-eks-ba74326
+    ip-10-0-2-38.eu-west-1.compute.internal    Ready    <none>   14h   v1.22.12-eks-ba74326
 ```
 
 ### Run locally the Docker application
@@ -152,11 +162,69 @@ docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock --name Grype 
 
 ```
 
+### Deploy the application into out EKS cluster
+We just need to do a change inside the "nginx-application" folder. Once the commit is pushed, it should automatically deploy into our Kubernetes cluster in AWS.
 
-### Deploy Docker application
+### Test as Statefulset
+We can start by checking if we have any resource in the namespace we created:
+```bash
+kubectl -n nginx-app get all 
+    NAME              READY   STATUS    RESTARTS   AGE
+    pod/nginx-app-0   1/1     Running   0          54m
+    ...
+    NAME                         READY   AGE
+    statefulset.apps/nginx-app   1/1     54m
+```
 
+We can see if we get any pods using the label we selected to represent our application:
+```bash
+kubectl -n nginx-app get pods -l app=nginx-app
+    NAME          READY   STATUS    RESTARTS   AGE
+    nginx-app-0   1/1     Running   0          145m
+```
 
-### Test
+Check if our headless service is created:
+```bash
+kubectl -n nginx-app get service nginx-service-stateful 
+    NAME                     TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+    nginx-service-stateful   ClusterIP   None         <none>        80/TCP    3m32s
+```
+
+Get hostname from the pod itself:
+```bash
+kubectl -n nginx-app exec nginx-app-0 -- sh -c 'hostname -f'
+    nginx-app-0.nginx-app.nginx-app.svc.cluster.local
+```
+
+Verify that internally our custom Nginx pod is giving us the correct message. For that we will spin an additional image that can do nslookups and curls onto our pod DNS name:
+```bash
+kubectl run -n nginx-app -i --tty --image busybox:1.28 dns-test --restart=Never --rm
+
+# Get IP for service
+nslookup nginx-service-stateful
+    Server:    172.20.0.10
+    Address 1: 172.20.0.10 kube-dns.kube-system.svc.cluster.local
+
+    Name:      nginx-service-stateful
+    Address 1: 10.0.1.131 10-0-1-131.nginx-service-stateful.nginx-app.svc.cluster.local
+
+```
+
+### Test as Deployment
+Let's do an end-to-end test to see if this works:
+```bash
+curl $(kubectl -n nginx-app get service nginx-service-deploy-lb -o jsonpath='{.status.ancer.ingress[].hostname}')
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Docker Nginx</title>
+    </head>
+    <body>
+        <h2>Hello World Yougov!</h2>
+    </body>
+    </html>
+```
 
 
 ## Project Status
@@ -176,6 +244,7 @@ Give credit here.
 - The VPC and EKS cluster creation is based [on this article](https://learn.hashicorp.com/tutorials/terraform/eks) from Hashicorp.
 - Dockerfile for Nginx customization is inspired on this [article](https://www.docker.com/blog/how-to-use-the-official-nginx-docker-image/).
 - Liveness and Readiness probes information was taken from [here](https://developers.redhat.com/blog/2020/11/10/you-probably-need-liveness-and-readiness-probes#example_3__a_server_side_rendered_application_with_an_api).
+- Used tons of info from the [official documentation](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/).
 
 
 
