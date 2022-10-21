@@ -62,7 +62,7 @@ List the ready features here:
 
 
 ## Architectural Diagram
-
+N/A
 
 ## Requirements
 N/A
@@ -262,6 +262,7 @@ Give credit here.
 
 
 ## Extras
+N/A
 
 
 ## Contact
