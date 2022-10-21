@@ -112,6 +112,6 @@ jobs:
       - name: Connect to Kubernetes cluster and deploy
         run: |
           aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name ${{ secrets.CLUSTER_NAME }}
-          kubectl apply -f namespace.yml
+          kubectl apply -f namespace.yaml
           kubectl apply -f nginx-custom-statefulset.yaml
           kubectl apply -f nginx-custom-service-stateful.yaml
