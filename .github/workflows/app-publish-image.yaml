@@ -12,6 +12,7 @@ on:
 env:
   ECR_REPOSITORY: ${{ secrets.ECR_NAME }}
   APP_DIR: nginx-application
+  AWS_REGION: ${{ secrets.AWS_REGION }}
 
 jobs:
 
@@ -55,7 +56,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -81,9 +82,7 @@ jobs:
   deploy-image:
     name: Deploy application to EKS
 
-    needs: |
-      setup-stage
-      upload-image
+    needs: upload-image
 
     runs-on: ubuntu-latest
 
@@ -105,11 +104,11 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Connect to Kubernetes cluster and deploy
         run: |
-          aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.CLUSTER_NAME }}
+          aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name ${{ secrets.CLUSTER_NAME }}
           kubectl apply -f namespace.yml
           kubectl apply -f nginx-custom-statefulset.yaml
           kubectl apply -f nginx-custom-service-stateful.yaml
