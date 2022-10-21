@@ -104,6 +104,7 @@ jobs:
       #     echo "${{ secrets.ECR_NAME }}" | sed 's/./& /g'
 
       # Clean tag due to bug https://github.com/kubernetes/kubernetes/issues/73906#issuecomment-673674479
+      # Careful as the AWS CLI commands can fail without warning
       - name: Terraform clean tag
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
