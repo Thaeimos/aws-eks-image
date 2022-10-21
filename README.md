@@ -57,6 +57,7 @@ List the ready features here:
     - Pull requests validator with linter, security scanner, password detector, placeholder for Sonar and Docker image scanner. You can check the definitions [here](/.github/workflows/pr-verify.yaml).
     - Infrastructure as code [deployment](./.github/workflows/iac-deploy.yaml).
     - Image publishing on private container repository [pipeline](./.github/workflows/app-publish-image.yaml) and deploy based on Kubernetes manifests.
+    - Avoid LoadBalancer [issue due to AKS module](https://github.com/kubernetes/kubernetes/issues/73906#issuecomment-673674479) by [removing tag in infrastructure](/.github/workflows/iac-deploy.yaml#L106).
 - Documentation.
 
 
