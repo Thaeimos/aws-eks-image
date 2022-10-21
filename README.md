@@ -184,6 +184,27 @@ kubectl -n nginx-app get all
     statefulset.apps/nginx-app   1/1     54m
 ```
 
+Check the external DNS name of the service:
+```bash
+kubectl -n nginx-app get services
+    NAME                     TYPE           CLUSTER-IP      EXTERNAL-IP                                                               PORT(S)        AGE
+    nginx-service-stateful   LoadBalancer   172.20.28.226   a29f07e66d8464907be08f6e057bb3ad-1451289305.eu-west-1.elb.amazonaws.com   80:32612/TCP   17m
+```
+
+Send a request to see if it works:
+```bash
+curl a29f07e66d8464907be08f6e057bb3ad-1451289305.eu-west-1.elb.amazonaws.com
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Docker Nginx</title>
+    </head>
+    <body>
+        <h2>Hello World Yougov!</h2>
+    </body>
+```
+
 We can see if we get any pods using the label we selected to represent our application:
 ```bash
 kubectl -n nginx-app get pods -l app=nginx-app
@@ -218,22 +239,6 @@ nslookup nginx-service-stateful
 
 ```
 
-### Test as Deployment
-Let's do an end-to-end test to see if this works:
-```bash
-curl $(kubectl -n nginx-app get service nginx-service-deploy-lb -o jsonpath='{.status.ancer.ingress[].hostname}')
-    <!doctype html>
-    <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Docker Nginx</title>
-    </head>
-    <body>
-        <h2>Hello World Yougov!</h2>
-    </body>
-    </html>
-```
-
 
 ## Project Status
 Project is: _Actively working_.
@@ -241,9 +246,6 @@ Project is: _Actively working_.
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
-
-- Pin external module.
-- Create namespace for app "nginx-app".
 
 
 ## Acknowledgements
