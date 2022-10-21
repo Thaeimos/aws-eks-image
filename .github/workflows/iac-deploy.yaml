@@ -114,7 +114,7 @@ jobs:
             echo "The resource has the following tags PRE removal:"
             aws ec2 describe-tags --region ${{ secrets.AWS_REGION }} --filters "Name=resource-id,Values=$SEC_GROUP"
             echo "Removing the conflicting tag..."
-            aws ec2 delete-tags --region ${{ secrets.AWS_REGION }} --resources $SEC_GROUP --tags "Key=kubernetes.io/cluster/eks-8PXw1Yog,Value=owned"
+            aws ec2 delete-tags --region ${{ secrets.AWS_REGION }} --resources $SEC_GROUP --tags "Key=kubernetes.io/cluster/eks-.*,Value=owned"
             echo "The resource has the following tags POST removal:"
             aws ec2 describe-tags --region ${{ secrets.AWS_REGION }} --filters "Name=resource-id,Values=$SEC_GROUP"
           else
