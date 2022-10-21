@@ -93,6 +93,8 @@ jobs:
           gh secret set ECR_URL --body "$SECRET01" --env "${{ needs.setup-stage.outputs.phase }}"
           SECRET02=$(terraform output -raw ECR_NAME)
           gh secret set ECR_NAME --body "$SECRET02" --env "${{ needs.setup-stage.outputs.phase }}"
+          SECRET03=$(terraform output -raw cluster_name)
+          gh secret set CLUSTER_NAME --body "$SECRET03" --env "${{ needs.setup-stage.outputs.phase }}"
 
       # - name: Debug secrets
       #   run: |
