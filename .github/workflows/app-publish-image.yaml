@@ -109,6 +109,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Substitute variables and secrets in manifest
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        # Use comma in the first sed because of the "/" in the URL
+        run: |
+          FILE=$(echo "nginx-custom-statefulset.yaml")
+          sed -i 's,REPO_PLACEHOLDER,${{ secrets.ECR_URL }},g' $FILE 
+          sed -i 's/SHA_PLACEHOLDER/${{ env.IMAGE_TAG }}/g' $FILE
+
       - name: Connect to Kubernetes cluster and deploy
         run: |
           aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name ${{ secrets.CLUSTER_NAME }}

@@ -17,9 +17,9 @@ spec:
     spec:
       containers:
       - name: nginx-app
-        image: 790577265452.dkr.ecr.eu-west-1.amazonaws.com/yougov-test:latest # CHANGE
+        image: REPO_PLACEHOLDER:SHA_PLACEHOLDER
         env:
-        - name: MYSQL_ALLOW_EMPTY_PASSWORD # CHANGE
+        - name: UBER_VARIABLE
           value: "1"
         ports:
         - name: nginx
