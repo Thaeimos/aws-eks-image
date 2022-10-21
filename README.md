@@ -248,6 +248,8 @@ Project is: _Actively working_.
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
 
+- Add GH token details in repo setup
+
 
 ## Acknowledgements
 Give credit here.
