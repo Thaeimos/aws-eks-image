@@ -39,8 +39,11 @@ jobs:
     runs-on: ubuntu-latest
 
     environment: 
-      name: ${{needs.setup-stage.outputs.phase}}
+      name: ${{ needs.setup-stage.outputs.phase }}
       url: http://thaeimos.com/${{needs.setup-stage.outputs.phase}}
+
+    outputs:
+      phase: ${{ needs.setup-stage.outputs.phase }}
     
     defaults:
       run:
@@ -87,8 +90,8 @@ jobs:
     runs-on: ubuntu-latest
 
     environment: 
-      name: ${{needs.setup-stage.outputs.phase}}
-      url: http://thaeimos.com/${{needs.setup-stage.outputs.phase}}
+      name: ${{needs.upload-image.outputs.phase}}
+      url: http://thaeimos.com/${{needs.upload-image.outputs.phase}}
     
     defaults:
       run:
