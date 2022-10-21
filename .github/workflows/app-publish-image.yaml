@@ -81,7 +81,7 @@ jobs:
   deploy-image:
     name: Deploy application to EKS
 
-    needs: upload-image
+    needs: setup-stage, upload-image
 
     runs-on: ubuntu-latest
 
