@@ -45,10 +45,18 @@ List the ready features here:
     - Runs with normal docker commands, as explained in the [run locally](#run-locally-the-docker-application) section.
     - Prints logs to the console.
     - Passes [security scans and linters](https://github.com/Thaeimos/aws-eks-image/actions/runs/3260212935/jobs/5353610420).
+- Kubernetes:
+    - Manifests to create a Namespace, Statefulset and Service.
+        - Custom Namespace.
+        - Persistent Volume Claim for the folder /var/www/mytest.
+        - Resource limits and requests.
+        - Added livenessProbe and readinessProbe.
+        - Dynamic repo and SHA substitution for better pinned image deployment.
+        - LoadBalancer service to have access from the exterior.
 - Pipeline based on Github actions:
     - Pull requests validator with linter, security scanner, password detector, placeholder for Sonar and Docker image scanner. You can check the definitions [here](/.github/workflows/pr-verify.yaml).
     - Infrastructure as code [deployment](./.github/workflows/iac-deploy.yaml).
-    - Image publishing on private container repository [pipeline](./.github/workflows/app-publish-image.yaml).
+    - Image publishing on private container repository [pipeline](./.github/workflows/app-publish-image.yaml) and deploy based on Kubernetes manifests.
 - Documentation.
 
 
