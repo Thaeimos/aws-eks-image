@@ -137,7 +137,7 @@ Verify it works properly:
 curl localhost:8081
     <!doctype html>
     ...
-    <h2>Hello World Yougov!</h2>
+    <h2>Hello World!</h2>
     </body>
     </html> 
 docker logs web 
@@ -202,7 +202,7 @@ curl a29f07e66d8464907be08f6e057bb3ad-1451289305.eu-west-1.elb.amazonaws.com
         <title>Docker Nginx</title>
     </head>
     <body>
-        <h2>Hello World Yougov!</h2>
+        <h2>Hello World!</h2>
     </body>
 ```
 
