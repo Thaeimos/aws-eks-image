@@ -7,7 +7,7 @@ variable "region" {
 variable "name" {
   type        = string
   description = "Suffix name for all the entities to create."
-  default     = "yougov-test"
+  default     = "aks-test"
 }
 
 variable "environment" {
