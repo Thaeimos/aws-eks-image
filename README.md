@@ -253,6 +253,11 @@ Include areas you believe need improvement / could be improved. Also add TODOs f
 - Investigate [Skaffold] (https://github.com/marketplace/actions/skaffold-github-action).
 - Github determine automatically path based on [this](https://stackoverflow.com/questions/70809269/in-github-actions-in-an-expression-is-there-a-way-to-determine-what-path-direct) and [this](https://stackoverflow.com/questions/72133752/grabbing-directory-path-which-triggered-a-github-actions-workflow-in-a-monorepo).
 - Propagation of environment automatically in chained jobs inside a workflow.
+- Mozilla SOPS for AWS [secrets](https://medium.com/@javier.vlopez/using-mozilla-sops-terraform-provider-c48f65b73ca).
+- Monitoring with Grafana and Prometheus.
+- Ingress.
+- TLS auto.
+- Service mesh.
 
 
 ## Acknowledgements
